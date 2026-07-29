@@ -1,5 +1,5 @@
 import numpy as np
-import matplotlib as plot
+import matplotlib.pyplot as plt
 
 # PART A
 """
@@ -13,7 +13,10 @@ def data():
     print("std = " + str(np.std(dataset)))
     print("max = " + str(np.max(dataset)))
     print("min = " + str(np.min(dataset)))
-    return 0
+    plt.hist(dataset)
+    plt.show()
+    return dataset
+    
 
 # PART B
 """
@@ -30,9 +33,5 @@ def main():
     sort()
 
 if __name__ == "__main__":
+    
     main()
-
-
-""""
-THIS IS A TEST. POOPY FART
-""""
