@@ -32,9 +32,9 @@ Statistics and number of other
 Histograms
 """
 def sort(dataset):
-    mask = dataset <= 1.2
+    mask = dataset <= 1.05
     dataset = dataset[mask]
-    mask = dataset >= -1.2
+    mask = dataset >= -1.05
     dataset = dataset[mask]
     print("TASK 1B")
     print("mean = " + str(np.mean(dataset)))
