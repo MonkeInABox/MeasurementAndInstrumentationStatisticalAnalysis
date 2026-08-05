@@ -1,5 +1,8 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+
+TYP = 1.5
+MINMAX = 5
 
 # PART A
 """
@@ -8,15 +11,18 @@ Get mean, std, max, min
 Create histogram
 """
 def data():
-    dataset = np.random.uniform(0, 3, 100000)
+    std = TYP/2 #because typical more important than minmax imo
+    # std = (MINMAX/4) 
+    dataset = np.random.normal(0, std, 100000)
     print("mean = " + str(np.mean(dataset)))
     print("std = " + str(np.std(dataset)))
     print("max = " + str(np.max(dataset)))
     print("min = " + str(np.min(dataset)))
-    plt.hist(dataset)
+    print("typical = " + str(2 * np.std(dataset)))
+    print("MINMAX = " + str(4 * np.std(dataset)))
+    plt.hist(dataset, bins=100)
     plt.show()
     return dataset
-    
 
 # PART B
 """
@@ -25,12 +31,25 @@ Statistics and number with this higher performance
 Statistics and number of other
 Histograms
 """
-def sort():
+def sort(dataset):
+    mask = dataset <= 1.2
+    dataset = dataset[mask]
+    mask = dataset >= -1.2
+    dataset = dataset[mask]
+    print("TASK 1B")
+    print("mean = " + str(np.mean(dataset)))
+    print("std = " + str(np.std(dataset)))
+    print("max = " + str(np.max(dataset)))
+    print("min = " + str(np.min(dataset)))
+    print("typical = " + str(2 * np.std(dataset)))
+    print("MINMAX = " + str(4 * np.std(dataset)))
+    plt.hist(dataset, bins=100, color="green")
+    plt.show()
     return 0
 
 def main():
-    data()
-    sort()
+    dataset = data()
+    sort(dataset)
 
 if __name__ == "__main__":
     
