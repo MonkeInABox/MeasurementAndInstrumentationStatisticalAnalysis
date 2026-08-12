@@ -12,7 +12,7 @@ Create histogram
 
 
 def data():
-    std = TYP / 2  # because typical more important than minmax imo
+    std = TYP / 2  # because typical more important than minmax iao
     # std = (MINMAX/4)
     dataset = 9 * np.random.weibull((std / 2) / TYP + 1, 10000000)
     print("mean = " + str(np.mean(dataset)))
@@ -27,8 +27,8 @@ def data():
 
 
 def dataPW():
-    edges = np.arange(0, 42, 2) # bin boundaries
-    func = [ # probabilities per bin (estimated visually from datasheet)
+    edges = np.arange(0, 42, 2)  # bin boundaries
+    func = [  # probabilities per bin (estimated visually from datasheet)
         0.10,
         0.24,
         0.14,
@@ -49,34 +49,22 @@ def dataPW():
         0.002,
         0.002,
         0,
-    ] 
-    print("sum check:" + str(sum(func*100)))
-    
-    #
+    ]
+
     num_samples = 100000
-    bin_indices = np.random.choice(
-        len(func), size=num_samples, p=func
-    )
+    bin_indices = np.random.choice(len(func), size=num_samples, p=func)
 
-    dataset = np.array(
-        [np.random.uniform(edges[i], edges[i + 1]) for i in bin_indices]
-    )
-
-    # statistics of sampled distribution
+    dataset = np.array([np.random.uniform(edges[i], edges[i + 1]) for i in bin_indices])
     mean_val = np.mean(dataset)
     std_val = np.std(dataset)
     typical = 2 * std_val
     minmax = 4 * std_val
-
-    # Print results
-    print(f"mean = {mean_val:.4f}")
-    print(f"std = {std_val:.4f}")
-    print(f"max = {np.max(dataset):.4f}")
-    print(f"min = {np.min(dataset):.4f}")
-    print(f"typical = {typical:.4f}")
-    print(f"MINMAX = {minmax:.4f}")
-
-    #Plot histogram
+    print("mean = " + mean_val)
+    print("std = " + std_val)
+    print("max = " + np.max(dataset))
+    print("min = " + np.min(dataset))
+    print("typical = " + typical)
+    print("MINMAX = " + minmax)
     plt.figure(figsize=(10, 5))
     plt.hist(dataset, bins=edges)
     plt.title("Sampled Piecewise Histogram Distribution")
@@ -86,7 +74,6 @@ def dataPW():
     plt.show()
 
     return dataset
-
 
 
 # PART B
