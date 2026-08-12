@@ -27,63 +27,66 @@ def data():
 
 
 def dataPW():
-    std = TYP / 2  # because typical more important than minmax imo
-    # std = (MINMAX/4)
-    dataset = np.linspace(0, 40, 10000)
-    cond = [
-        (0 < dataset) & (dataset < 2),
-        (2 <= dataset) & (dataset < 4),
-        (4 <= dataset) & (dataset < 6),
-        (6 <= dataset) & (dataset < 8),
-        (8 <= dataset) & (dataset < 10),
-        (10 <= dataset) & (dataset < 12),
-        (12 <= dataset) & (dataset < 14),
-        (14 <= dataset) & (dataset < 16),
-        (16 <= dataset) & (dataset < 18),
-        (18 <= dataset) & (dataset < 20),
-        (20 <= dataset) & (dataset < 22),
-        (22 <= dataset) & (dataset < 24),
-        (24 <= dataset) & (dataset < 26),
-        (26 <= dataset) & (dataset < 28),
-        (28 <= dataset) & (dataset < 30),
-        (30 <= dataset) & (dataset < 32),
-        (32 <= dataset) & (dataset < 34),
-        (34 <= dataset) & (dataset < 36),
-        (36 <= dataset) & (dataset < 38),
-        (38 <= dataset) & (dataset < 40),
-    ]
-    func = [
+    edges = np.arange(0, 42, 2) # bin boundaries
+    func = [ # probabilities per bin (estimated visually from datasheet)
         0.10,
         0.24,
         0.14,
         0.14,
         0.11,
         0.075,
-        0.052,
-        0.051,
+        0.05,
+        0.05,
         0.04,
-        0.015,
-        0.02,
-        0.015,
         0.01,
-        0.005,
-        0.008,
-        0.005,
-        0.005,
-        0.005,
-        0.005,
+        0.014,
+        0.01,
+        0.007,
+        0.002,
+        0.004,
+        0.002,
+        0.002,
+        0.002,
+        0.002,
         0,
-    ]
-    np.piecewise(dataset, cond, func)
-    print("mean = " + str(np.mean(dataset)))
-    print("std = " + str(np.std(dataset)))
-    print("max = " + str(np.max(dataset)))
-    print("min = " + str(np.min(dataset)))
-    print("typical = " + str(2 * np.std(dataset)))
-    print("MINMAX = " + str(4 * np.std(dataset)))
-    plt.hist(dataset, bins=100)
+    ] 
+    print("sum check:" + str(sum(func*100)))
+    
+    #
+    num_samples = 100000
+    bin_indices = np.random.choice(
+        len(func), size=num_samples, p=func
+    )
+
+    dataset = np.array(
+        [np.random.uniform(edges[i], edges[i + 1]) for i in bin_indices]
+    )
+
+    # statistics of sampled distribution
+    mean_val = np.mean(dataset)
+    std_val = np.std(dataset)
+    typical = 2 * std_val
+    minmax = 4 * std_val
+
+    # Print results
+    print(f"mean = {mean_val:.4f}")
+    print(f"std = {std_val:.4f}")
+    print(f"max = {np.max(dataset):.4f}")
+    print(f"min = {np.min(dataset):.4f}")
+    print(f"typical = {typical:.4f}")
+    print(f"MINMAX = {minmax:.4f}")
+
+    #Plot histogram
+    plt.figure(figsize=(10, 5))
+    plt.hist(dataset, bins=edges)
+    plt.title("Sampled Piecewise Histogram Distribution")
+    plt.xlabel("Offset Voltage Drift (uV/°C)")
+    plt.ylabel("Frequency")
+    plt.grid(axis="y", linestyle="--", alpha=0.7)
     plt.show()
+
     return dataset
+
 
 
 # PART B
