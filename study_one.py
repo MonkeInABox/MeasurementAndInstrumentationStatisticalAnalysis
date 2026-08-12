@@ -22,7 +22,7 @@ def data():
     print("min = " + str(np.min(dataset)))
     print("typical = " + str(2 * np.std(dataset)))
     print("MINMAX = " + str(4 * np.std(dataset)))
-    plt.hist(dataset, bins=100)
+    plt.hist(dataset, bins=1 + int(np.log2(len(dataset))))
     plt.show()
     return dataset
 
@@ -48,7 +48,7 @@ def sort(dataset):
     print("min = " + str(np.min(dataset)))
     print("typical = " + str(2 * np.std(dataset)))
     print("MINMAX = " + str(4 * np.std(dataset)))
-    plt.hist(dataset, bins=100, color="green")
+    plt.hist(dataset, bins=1 + int(np.log2(len(dataset))))
     plt.show()
     return 0
 
