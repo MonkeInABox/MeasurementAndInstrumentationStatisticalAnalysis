@@ -11,7 +11,7 @@ def dist_gen():
     c_I = -abs(np.random.exponential(std_c_I, 100000))  # one side, negative only
     std_d_I = input_offset_typ / 2
     d_I = np.random.normal(0, std_d_I, 100000)
-    plt.hist(c_I, bins=1 + int(np.log2(len(c_I))), color="Green")
+    plt.hist(c_I, bins=1 + int(np.log2(len(c_I))), color="Green", label="c_I")
     print("TASK cI")
     print("mean = " + str(np.mean(c_I)))
     print("std = " + str(np.std(c_I)))
@@ -19,7 +19,7 @@ def dist_gen():
     print("min = " + str(np.min(c_I)))
     print("typical = " + str(2 * np.std(c_I)))
     print("MINMAX = " + str(4 * np.std(c_I)))
-    plt.hist(d_I, bins=1 + int(np.log2(len(d_I))), color="Purple")
+    plt.hist(d_I, bins=1 + int(np.log2(len(d_I))), color="Purple", label="d_I")
     print("TASK dI")
     print("mean = " + str(np.mean(d_I)))
     print("std = " + str(np.std(d_I)))
@@ -27,6 +27,10 @@ def dist_gen():
     print("min = " + str(np.min(d_I)))
     print("typical = " + str(2 * np.std(d_I)))
     print("MINMAX = " + str(4 * np.std(d_I)))
+    plt.title("Distributions")
+    plt.xlabel("Current (A)")
+    plt.ylabel("Frequency")
+    plt.legend()
     plt.show()
     return c_I, d_I
 
@@ -35,9 +39,15 @@ def data(c_I, d_I):
     # model dist of I_B1 and I_B2
     # std = IB_TYP / 2  # because typical more important than minmax imo
     I_B1 = c_I + (d_I / 2)
-    I_B2 = c_I - (d_I / 2)
-    plt.hist(I_B1, bins=1 + int(np.log2(len(I_B1))), color="Green")
-    plt.hist(I_B2, bins=1 + int(np.log2(len(I_B2))), color="Purple")
+    I_B2 = (
+        c_I - (d_I / 2)
+    )  # NOTE: when i use the c(I) extra multiplication, correlation is perfect... much to consider
+    plt.hist(I_B2, bins=1 + int(np.log2(len(I_B2))), color="Purple", label="I_B2")
+    plt.hist(I_B1, bins=1 + int(np.log2(len(I_B1))), color="Green", label="I_B1")
+    plt.title("B1 and B2 Input Currents")
+    plt.xlabel("Current (A)")
+    plt.ylabel("Frequency")
+    plt.legend()
     plt.show()
     # calculate I_ib and I_io
     return I_B1, I_B2
@@ -55,7 +65,7 @@ def I_ib_gen(I_B1, I_B2):
     print("min = " + str(np.min(I_io)))
     print("typical = " + str(2 * np.std(I_io)))
     print("MINMAX = " + str(4 * np.std(I_io)))
-    plt.hist(I_io, bins=1 + int(np.log2(len(I_io))), color="green")
+    plt.hist(I_io, bins=1 + int(np.log2(len(I_io))), color="green", label="I_IO")
     I_ib = []
     for i in I_B1:
         I_ib.append((i + rng.choice(I_B2)) / 2)  # multiply each I_B1 with a random I_B2
@@ -66,15 +76,25 @@ def I_ib_gen(I_B1, I_B2):
     print("min = " + str(np.min(I_ib)))
     print("typical = " + str(2 * np.std(I_ib)))
     print("MINMAX = " + str(4 * np.std(I_ib)))
-    plt.hist(I_ib, bins=1 + int(np.log2(len(I_ib))), color="purple")
+    plt.hist(I_ib, bins=1 + int(np.log2(len(I_ib))), color="purple", label="I_IB")
+    plt.title("I Random Sampels")
+    plt.xlabel("Input bias current (A)")
+    plt.ylabel("Frequency")
+    plt.legend()
+    plt.xlim(-0.5 * 10**-7, 0.5 * 10**-7)
     plt.show()
-    return I_ib
+    return I_ib, I_io
+
+
+def corr(I_B1, I_B2):
+    print(np.corrcoef(I_B1, I_B2)[0, 1])
 
 
 def main():
     I_c, I_d = dist_gen()
     I_B1, I_B2 = data(I_c, I_d)
     I_ib_gen(I_B1, I_B2)
+    corr(I_B1, I_B2)
 
 
 if __name__ == "__main__":

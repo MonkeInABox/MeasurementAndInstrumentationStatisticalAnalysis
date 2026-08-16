@@ -23,6 +23,9 @@ def data():
     print("typical = " + str(2 * np.std(dataset)))
     print("MINMAX = " + str(4 * np.std(dataset)))
     plt.hist(dataset, bins=1 + int(np.log2(len(dataset))))
+    plt.title("Input Offset Voltages")
+    plt.xlabel("Voltage V")
+    plt.ylabel("Frequency")
     plt.show()
     return dataset
 
@@ -49,6 +52,9 @@ def sort(dataset):
     print("typical = " + str(2 * np.std(dataset)))
     print("MINMAX = " + str(4 * np.std(dataset)))
     plt.hist(dataset, bins=1 + int(np.log2(len(dataset))))
+    plt.title("Sorted Input Offset Voltages")
+    plt.xlabel("Voltage (V)")
+    plt.ylabel("Frequency")
     plt.show()
     return 0
 

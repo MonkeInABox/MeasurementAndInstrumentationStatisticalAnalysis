@@ -70,7 +70,6 @@ def dataPW():
     plt.title("Sampled Piecewise Histogram Distribution")
     plt.xlabel("Offset Voltage Drift (uV/°C)")
     plt.ylabel("Frequency")
-    plt.grid(axis="y", linestyle="--", alpha=0.7)
     plt.show()
 
     return dataset
