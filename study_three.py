@@ -59,12 +59,12 @@ def dataPW():
     std_val = np.std(dataset)
     typical = 2 * std_val
     minmax = 4 * std_val
-    print("mean = " + mean_val)
-    print("std = " + std_val)
-    print("max = " + np.max(dataset))
-    print("min = " + np.min(dataset))
-    print("typical = " + typical)
-    print("MINMAX = " + minmax)
+    print("mean = " + str(mean_val))
+    print("std = " + str(std_val))
+    print("max = " + str(np.max(dataset)))
+    print("min = " + str(np.min(dataset)))
+    print("typical = " + str(typical))
+    print("MINMAX = " + str(minmax))
     plt.figure(figsize=(10, 5))
     plt.hist(dataset, bins=edges)
     plt.title("Sampled Piecewise Histogram Distribution")
