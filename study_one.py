@@ -40,10 +40,13 @@ Histograms
 
 
 def sort(dataset):
+    leftover_mask = (dataset < -1.05) | (dataset > 1.05)
+    negative_ds = dataset[leftover_mask]
     mask = dataset <= 1.05
     dataset = dataset[mask]
     mask = dataset >= -1.05
     dataset = dataset[mask]
+
     print("TASK 1B")
     print("mean = " + str(np.mean(dataset)))
     print("std = " + str(np.std(dataset)))
@@ -52,10 +55,24 @@ def sort(dataset):
     print("typical = " + str(2 * np.std(dataset)))
     print("MINMAX = " + str(4 * np.std(dataset)))
     plt.hist(dataset, bins=1 + int(np.log2(len(dataset))))
-    plt.title("Sorted Input Offset Voltages")
+    plt.title("High Quality Input Offset Voltages")
     plt.xlabel("Voltage (V)")
     plt.ylabel("Frequency")
     plt.show()
+
+    print("TASK 1B")
+    print("mean = " + str(np.mean(negative_ds)))
+    print("std = " + str(np.std(negative_ds)))
+    print("max = " + str(np.max(negative_ds)))
+    print("min = " + str(np.min(negative_ds)))
+    print("typical = " + str(2 * np.std(negative_ds)))
+    print("MINMAX = " + str(4 * np.std(negative_ds)))
+    plt.hist(negative_ds, bins=1 + int(np.log2(len(negative_ds))))
+    plt.title("Low Quality Input Offset Voltages")
+    plt.xlabel("Voltage (V)")
+    plt.ylabel("Frequency")
+    plt.show()
+
     return 0
 
 
