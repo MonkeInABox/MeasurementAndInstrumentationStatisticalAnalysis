@@ -30,7 +30,6 @@ def dist_gen():
     plt.title("Distributions")
     plt.xlabel("Current (A)")
     plt.ylabel("Frequency")
-    plt.legend()
     plt.show()
     return c_I, d_I
 
@@ -47,7 +46,6 @@ def data(c_I, d_I):
     plt.title("B1 and B2 Input Currents")
     plt.xlabel("Current (A)")
     plt.ylabel("Frequency")
-    plt.legend()
     plt.show()
     # calculate I_ib and I_io
     return I_B1, I_B2
@@ -80,7 +78,6 @@ def I_ib_gen(I_B1, I_B2):
     plt.title("I Random Sampels")
     plt.xlabel("Input bias current (A)")
     plt.ylabel("Frequency")
-    plt.legend()
     plt.xlim(-0.5 * 10**-7, 0.5 * 10**-7)
     plt.show()
     return I_ib, I_io

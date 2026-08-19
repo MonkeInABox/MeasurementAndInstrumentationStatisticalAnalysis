@@ -66,7 +66,7 @@ def dataPW():
     print("typical = " + str(typical))
     print("MINMAX = " + str(minmax))
     plt.figure(figsize=(10, 5))
-    plt.hist(dataset, bins=edges)
+    plt.hist(dataset, bins=edges, edgecolor = 'black')
     plt.title("Sampled Piecewise Histogram Distribution")
     plt.xlabel("Offset Voltage Drift (uV/°C)")
     plt.ylabel("Frequency")
@@ -87,7 +87,9 @@ def dataPW():
     print("min = " + str(np.min(logs)))
     print("typical = " + str(typical))
     print("MINMAX = " + str(minmax))
-    plt.hist(logs, bins = edges, alpha = 0.5)
+    plt.hist(logs, bins = edges, alpha = 0.5, edgecolor = 'black')
+    plt.xticks(range(0, 42, 2))
+    plt.yticks(range(0, 27500, 2500))
     plt.show()
 
     return dataset
