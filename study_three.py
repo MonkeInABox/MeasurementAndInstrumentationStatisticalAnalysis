@@ -77,7 +77,7 @@ def dataPW():
     mu = np.mean(log_samples)
     sigma = np.std(log_samples)
     logs = np.random.lognormal(mu, sigma, 100000)
-    logs = np.clip(logs, a_min=0.1, a_max=40)
+    logs = np.clip(logs, a_min=0, a_max=45)
     mean_log = np.mean(logs)
     std_log = np.std(logs)
     typical = std_log * 2
@@ -120,8 +120,8 @@ def sort(dataset):
     print("min = " + str(np.min(dataset)))
     print("typical = " + str(2 * np.std(dataset)))
     print("MINMAX = " + str(4 * np.std(dataset)))
-    plt.hist(dataset, bins=range(0, 40, 2), color="green")
-    plt.xticks(range(0, 40, 2))
+    plt.hist(dataset, bins=range(0, 42, 2), color="green")
+    plt.xticks(range(0, 42, 2))
     plt.show()
     return 0
 

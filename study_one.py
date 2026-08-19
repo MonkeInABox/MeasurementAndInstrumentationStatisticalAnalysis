@@ -21,17 +21,22 @@ def data():
     dataset = dataset[mask]
     mask = dataset >= -3.05
     dataset = dataset[mask]
+    weights = np.ones_like(dataset) * (100.0 / len(dataset))
     print("mean = " + str(np.mean(dataset)))
     print("std = " + str(np.std(dataset)))
     print("max = " + str(np.max(dataset)))
     print("min = " + str(np.min(dataset)))
     print("typical = " + str(2 * np.std(dataset)))
     print("MINMAX = " + str(4 * np.std(dataset)))
-    ___, bins, ___ = plt.hist(dataset, bins=np.arange(-3.05, 3.05, 0.1))
-    plt.xticks(bins)
-    plt.title("Input Offset Voltages")
+    plt.figure(figsize=(9, 7))
+    plt.hist(dataset, bins=np.arange(-3, 3, 0.2), weights=weights, edgecolor="black", color="teal")
+    plt.grid(axis = "y", alpha = 0.1)
+    plt.xticks(np.arange(-3, 3, 0.4),rotation='vertical')
+    plt.yticks(np.arange(0, 12, 1))
+    plt.ylim(0, 12)
+    plt.title("Original Input Offset Voltage Simulation")
     plt.xlabel("Voltage V")
-    plt.ylabel("Frequency")
+    plt.ylabel("Frequency (% of Original Dataset)")
     plt.show()
     return dataset
 
@@ -75,7 +80,7 @@ def sort(dataset):
     print("typical = " + str(2 * np.std(negative_ds)))
     print("MINMAX = " + str(4 * np.std(negative_ds)))
     ___, bins, ___ = plt.hist(negative_ds, bins=np.arange(-3.05, 3.05, 0.1), edgecolor = "black")
-    plt.xticks(bins)
+    plt.xticks(np.arange(-3, 3, 0.4),rotation='vertical')
     plt.title("Low Quality Input Offset Voltages")
     plt.xlabel("Voltage (V)")
     plt.ylabel("Frequency")
@@ -84,6 +89,7 @@ def sort(dataset):
     return 0
 
 def sort_new(dataset):
+    total_original_count = len(dataset)
     ratio = (TYP/2) / STDEV_REQ
     good = []
     bad = []
@@ -104,11 +110,17 @@ def sort_new(dataset):
     print("min = " + str(np.min(dataset)))
     print("typical = " + str(2 * np.std(dataset)))
     print("MINMAX = " + str(4 * np.std(dataset)))
-    ___, bins, ___ = plt.hist(dataset, bins='scott', edgecolor = "black")
-    plt.xticks(bins)
+    good_weights = np.ones_like(dataset) * (100.0 / total_original_count)
+    plt.figure(figsize=(9, 7))
+    plt.hist(dataset, bins=np.arange(-3, 3, 0.2), weights=good_weights, edgecolor="black", color="teal")
+    #___, bins, ___ = plt.hist(dataset, bins=np.arange(-3, 3, 0.2), edgecolor = "black")
+    plt.xticks(np.arange(-3, 3, 0.4),rotation='vertical')
+    plt.yticks(np.arange(0, 12, 1))
+    plt.ylim(0, 12)
+    plt.grid(axis = "y", alpha = 0.1)
     plt.title("High Quality Input Offset Voltages")
     plt.xlabel("Voltage (V)")
-    plt.ylabel("Frequency")
+    plt.ylabel("Frequency (% of Original Dataset)")
     plt.show()
     print("REJECT")
     print("mean = " + str(np.mean(dataset_neg)))
@@ -117,17 +129,24 @@ def sort_new(dataset):
     print("min = " + str(np.min(dataset_neg)))
     print("typical = " + str(2 * np.std(dataset_neg)))
     print("MINMAX = " + str(4 * np.std(dataset_neg)))
-    ___, bins, ___ = plt.hist(dataset_neg, bins='scott', edgecolor = "black")
-    plt.xticks(bins)
+    dataset_neg = dataset_neg[:total_original_count]
+    neg_weights = np.ones_like(dataset_neg) * (100.0 / total_original_count)
+    plt.figure(figsize=(9, 7))
+    plt.hist(dataset_neg, bins=np.arange(-3, 3, 0.2), weights=neg_weights, edgecolor="black", color="teal")  
+    plt.xticks(np.arange(-3, 3, 0.4),rotation='vertical')
+    plt.yticks(np.arange(0, 12, 1))
+    plt.ylim(0, 12)
+    plt.grid(axis = "y", alpha = 0.1)
     plt.title("Low Quality Input Offset Voltages")
     plt.xlabel("Voltage (V)")
-    plt.ylabel("Frequency")
+    plt.ylabel("Frequency (% of Original Dataset)")
     plt.show()
     
     return 0
 
 
 def main():
+    plt.rc('axes.spines', top=False, right=False, left=True, bottom=True)
     dataset = data()
     sort_new(dataset)
 
