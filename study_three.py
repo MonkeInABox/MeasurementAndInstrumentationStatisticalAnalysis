@@ -156,12 +156,12 @@ def data():
     return dataset
 
 def offset(vos_25, drift_dataset):
-    sign = np.random.choice([-1, 1], size=100000)
-    signed = sign * drift_dataset 
+    #sign = np.random.choice([-1, 1], size=100000)
+    #signed = sign * drift_dataset 
     dT_max = 85 - 25
     dT_min = -25 - 25  
-    max = vos_25 + (signed * dT_max) / 1000.0
-    min = vos_25 + (signed * dT_min) / 1000.0
+    max = vos_25 + (dT_max) / 1000.0
+    min = vos_25 + (dT_min) / 1000.0
 
     print("base")
     print("mean =", np.mean(vos_25))
