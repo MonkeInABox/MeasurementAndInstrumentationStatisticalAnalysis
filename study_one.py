@@ -91,58 +91,61 @@ def sort(dataset):
 def sort_new(dataset):
     total_original_count = len(dataset)
     ratio = (TYP/2) / STDEV_REQ
-    good = []
-    bad = []
-    while(len(good) < 50000):
-        candidates = np.random.normal(0, TYP/2, 100000)
-        u = np.random.uniform(0, ratio * (1 / ((TYP/2) * np.sqrt(2 * np.pi))) * np.exp(-0.5 * (candidates / (TYP /2)) ** 2))
-        accept = u <= (1 / (STDEV_REQ * np.sqrt(2 * np.pi))) * np.exp(-0.5 * (candidates / STDEV_REQ) ** 2)
-        good.extend(candidates[accept])
-        bad.extend(candidates[~accept])
-    dataset = np.array(good)
-    dataset_neg = np.array(bad)
-    dataset = dataset[(dataset <= 3.05) & (dataset >= -3.05)]
-    dataset_neg = dataset_neg[(dataset_neg <= 3.05) & (dataset_neg >= -3.05)]
+
+    sampling = ratio * (1 / ((TYP/2) * np.sqrt(2 * np.pi))) * np.exp(-0.5 * (dataset / (TYP/2)) ** 2)
+    u = np.random.uniform(0, sampling)
+
+    target = (1 / (STDEV_REQ * np.sqrt(2 * np.pi))) * np.exp(-0.5 * (dataset / STDEV_REQ) ** 2)
+
+    accept = u <= target
+
+    good = dataset[accept]
+    bad = dataset[~accept]
+
+    good = good[(good <= 3.05) & (good >= -3.05)]
+    bad = bad[(bad <= 3.05) & (bad >= -3.05)]
+
     print("ACCEPT")
-    print("mean = " + str(np.mean(dataset)))
-    print("std = " + str(np.std(dataset)))
-    print("max = " + str(np.max(dataset)))
-    print("min = " + str(np.min(dataset)))
-    print("typical = " + str(2 * np.std(dataset)))
-    print("MINMAX = " + str(4 * np.std(dataset)))
-    good_weights = np.ones_like(dataset) * (100.0 / total_original_count)
+    print("mean = " + str(np.mean(good)))
+    print("std = " + str(np.std(good)))
+    print("max = " + str(np.max(good)))
+    print("min = " + str(np.min(good)))
+    print("typical = " + str(2 * np.std(good)))
+    print("MINMAX = " + str(4 * np.std(good)))
+    good_weights = np.ones_like(good) * (100.0 / total_original_count)
     plt.figure(figsize=(9, 7))
-    plt.hist(dataset, bins=np.arange(-3, 3, 0.2), weights=good_weights, edgecolor="black", color="teal")
-    #___, bins, ___ = plt.hist(dataset, bins=np.arange(-3, 3, 0.2), edgecolor = "black")
-    plt.xticks(np.arange(-3, 3, 0.4),rotation='vertical')
+    plt.hist(good, bins=np.arange(-3, 3, 0.2), weights=good_weights, edgecolor="black", color="teal")
+    plt.xticks(np.arange(-3, 3, 0.4), rotation='vertical')
     plt.yticks(np.arange(0, 12, 1))
     plt.ylim(0, 12)
-    plt.grid(axis = "y", alpha = 0.1)
+    plt.grid(axis="y", alpha=0.1)
     plt.title("High Quality Input Offset Voltages")
     plt.xlabel("Voltage (V)")
     plt.ylabel("Frequency (% of Original Dataset)")
+    print("length = " + str(len(good)))
     plt.show()
+
     print("REJECT")
-    print("mean = " + str(np.mean(dataset_neg)))
-    print("std = " + str(np.std(dataset_neg)))
-    print("max = " + str(np.max(dataset_neg)))
-    print("min = " + str(np.min(dataset_neg)))
-    print("typical = " + str(2 * np.std(dataset_neg)))
-    print("MINMAX = " + str(4 * np.std(dataset_neg)))
-    dataset_neg = dataset_neg[:total_original_count]
-    neg_weights = np.ones_like(dataset_neg) * (100.0 / total_original_count)
+    print("mean = " + str(np.mean(bad)))
+    print("std = " + str(np.std(bad)))
+    print("max = " + str(np.max(bad)))
+    print("min = " + str(np.min(bad)))
+    print("typical = " + str(2 * np.std(bad)))
+    print("MINMAX = " + str(4 * np.std(bad)))
+    print("length = " + str(len(bad)))
+    bad_weights = np.ones_like(bad) * (100.0 / total_original_count)
     plt.figure(figsize=(9, 7))
-    plt.hist(dataset_neg, bins=np.arange(-3, 3, 0.2), weights=neg_weights, edgecolor="black", color="teal")  
-    plt.xticks(np.arange(-3, 3, 0.4),rotation='vertical')
+    plt.hist(bad, bins=np.arange(-3, 3, 0.2), weights=bad_weights, edgecolor="black", color="teal")
+    plt.xticks(np.arange(-3, 3, 0.4), rotation='vertical')
     plt.yticks(np.arange(0, 12, 1))
     plt.ylim(0, 12)
-    plt.grid(axis = "y", alpha = 0.1)
+    plt.grid(axis="y", alpha=0.1)
     plt.title("Low Quality Input Offset Voltages")
     plt.xlabel("Voltage (V)")
     plt.ylabel("Frequency (% of Original Dataset)")
     plt.show()
-    
-    return 0
+
+    return good, bad
 
 
 def main():
