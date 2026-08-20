@@ -4,6 +4,7 @@ import numpy as np
 TYP = 1.5
 MINMAX = 5
 STDEV_REQ = 0.5
+np.random.default_rng(23)
 
 # PART A
 """
@@ -49,52 +50,53 @@ Statistics and number of other
 Histograms
 """
 
+# old unused sort
+# def sort(dataset):
+#     leftover_mask = (dataset < -1.05) | (dataset > 1.05)
+#     negative_ds = dataset[leftover_mask]
+#     mask = dataset <= 1.05
+#     dataset = dataset[mask]
+#     mask = dataset >= -1.05
+#     dataset = dataset[mask]
 
-def sort(dataset):
-    leftover_mask = (dataset < -1.05) | (dataset > 1.05)
-    negative_ds = dataset[leftover_mask]
-    mask = dataset <= 1.05
-    dataset = dataset[mask]
-    mask = dataset >= -1.05
-    dataset = dataset[mask]
+#     print("TASK 1B")
+#     print("mean = " + str(np.mean(dataset)))
+#     print("std = " + str(np.std(dataset)))
+#     print("max = " + str(np.max(dataset)))
+#     print("min = " + str(np.min(dataset)))
+#     print("typical = " + str(2 * np.std(dataset)))
+#     print("MINMAX = " + str(4 * np.std(dataset)))
+#     ___, bins, ___ = plt.hist(dataset, bins='rice', edgecolor = "black")
+#     plt.xticks(bins)
+#     plt.title("High Quality Input Offset Voltages")
+#     plt.xlabel("Voltage (V)")
+#     plt.ylabel("Frequency")
+#     plt.show()
 
-    print("TASK 1B")
-    print("mean = " + str(np.mean(dataset)))
-    print("std = " + str(np.std(dataset)))
-    print("max = " + str(np.max(dataset)))
-    print("min = " + str(np.min(dataset)))
-    print("typical = " + str(2 * np.std(dataset)))
-    print("MINMAX = " + str(4 * np.std(dataset)))
-    ___, bins, ___ = plt.hist(dataset, bins='rice', edgecolor = "black")
-    plt.xticks(bins)
-    plt.title("High Quality Input Offset Voltages")
-    plt.xlabel("Voltage (V)")
-    plt.ylabel("Frequency")
-    plt.show()
+#     print("TASK 1B")
+#     print("mean = " + str(np.mean(negative_ds)))
+#     print("std = " + str(np.std(negative_ds)))
+#     print("max = " + str(np.max(negative_ds)))
+#     print("min = " + str(np.min(negative_ds)))
+#     print("typical = " + str(2 * np.std(negative_ds)))
+#     print("MINMAX = " + str(4 * np.std(negative_ds)))
+#     ___, bins, ___ = plt.hist(negative_ds, bins=np.arange(-3.05, 3.05, 0.1), edgecolor = "black")
+#     plt.xticks(np.arange(-3, 3, 0.4),rotation='vertical')
+#     plt.title("Low Quality Input Offset Voltages")
+#     plt.xlabel("Voltage (V)")
+#     plt.ylabel("Frequency")
+#     plt.show()
 
-    print("TASK 1B")
-    print("mean = " + str(np.mean(negative_ds)))
-    print("std = " + str(np.std(negative_ds)))
-    print("max = " + str(np.max(negative_ds)))
-    print("min = " + str(np.min(negative_ds)))
-    print("typical = " + str(2 * np.std(negative_ds)))
-    print("MINMAX = " + str(4 * np.std(negative_ds)))
-    ___, bins, ___ = plt.hist(negative_ds, bins=np.arange(-3.05, 3.05, 0.1), edgecolor = "black")
-    plt.xticks(np.arange(-3, 3, 0.4),rotation='vertical')
-    plt.title("Low Quality Input Offset Voltages")
-    plt.xlabel("Voltage (V)")
-    plt.ylabel("Frequency")
-    plt.show()
-
-    return 0
+#     return 0
 
 def sort_new(dataset):
     total_original_count = len(dataset)
     ratio = (TYP/2) / STDEV_REQ
 
+    # adapted from https://www.geeksforgeeks.org/python/how-to-plot-a-normal-distribution-with-matplotlib-in-python/
     sampling = ratio * (1 / ((TYP/2) * np.sqrt(2 * np.pi))) * np.exp(-0.5 * (dataset / (TYP/2)) ** 2)
     u = np.random.uniform(0, sampling)
-
+    # adapted from https://agdenadel.github.io/Rejection-sampling/
     target = (1 / (STDEV_REQ * np.sqrt(2 * np.pi))) * np.exp(-0.5 * (dataset / STDEV_REQ) ** 2)
 
     accept = u <= target
@@ -104,6 +106,10 @@ def sort_new(dataset):
 
     good = good[(good <= 3.05) & (good >= -3.05)]
     bad = bad[(bad <= 3.05) & (bad >= -3.05)]
+    # mask = bad <= 1.1
+    # bad = bad[mask]
+    # mask = bad >= -1.1
+    # bad = bad[mask]
 
     print("ACCEPT")
     print("mean = " + str(np.mean(good)))

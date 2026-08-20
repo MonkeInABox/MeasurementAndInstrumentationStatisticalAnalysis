@@ -2,12 +2,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 TYP = 10
+np.random.default_rng(23)
 
 # PART A
 """
-Generate 10^5 values to create dataset for OPA445AP
-Get mean, std, max, min
-Create histogram
+gen original dataset using piecewise and then fit a distribution
+Find max min temp offset dists
 """
 
 
@@ -157,25 +157,22 @@ def data():
 
 def offset(vos_25, drift_dataset):
     sign = np.random.choice([-1, 1], size=100000)
-    drift_signed = sign * drift_dataset 
-
+    signed = sign * drift_dataset 
     dT_max = 85 - 25
     dT_min = -25 - 25  
-    max = vos_25 + (drift_signed * dT_max) / 1000.0
-    min = vos_25 + (drift_signed * dT_min) / 1000.0
+    max = vos_25 + (signed * dT_max) / 1000.0
+    min = vos_25 + (signed * dT_min) / 1000.0
 
-    print("Normal")
+    print("base")
     print("mean =", np.mean(vos_25))
     print("std =", np.std(vos_25))
     print("max =", np.max(vos_25))
     print("min =", np.min(vos_25))
-
     print("MAX")
     print("mean =", np.mean(max))
     print("std =", np.std(max))
     print("max =", np.max(max))
     print("min =", np.min(max))
-
     print("MIN")
     print("mean =", np.mean(min))
     print("std =", np.std(min))
@@ -185,7 +182,6 @@ def offset(vos_25, drift_dataset):
     bins = np.arange(-4, 4.5, 0.5)
     weights_max = np.ones_like(max) * (100.0 / len(max))
     weights_min = np.ones_like(min) * (100.0 / len(min))
-
     plt.figure(figsize=(9, 7))
     plt.hist(max, bins=bins, weights=weights_max, edgecolor="black", color="teal")
     plt.grid(axis = "y", alpha = 0.1)
@@ -194,7 +190,6 @@ def offset(vos_25, drift_dataset):
     plt.yticks(np.arange(0, 27.5, 2.5))
     plt.ylabel("Frequency (%)")
     plt.show()
-
     plt.figure(figsize=(9, 7))
     plt.hist(min, bins=bins, weights=weights_min, edgecolor="black", color="teal")
     plt.grid(axis = "y", alpha = 0.1)

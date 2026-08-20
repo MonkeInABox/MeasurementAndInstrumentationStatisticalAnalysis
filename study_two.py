@@ -4,6 +4,7 @@ import numpy as np
 IB_TYP = 20
 input_bias_typ = 20
 input_offset_typ = 2
+np.random.default_rng(23)
 
 
 def dist_gen():
@@ -72,6 +73,20 @@ def data(c_I, d_I):
     plt.ylim(0, 20)
     plt.yticks(range(0, 25, 5))
     plt.show()
+    print("TASK B1")
+    print("mean = " + str(np.mean(I_B1)))
+    print("std = " + str(np.std(I_B1)))
+    print("max = " + str(np.max(I_B1)))
+    print("min = " + str(np.min(I_B1)))
+    print("typical = " + str(2 * np.std(I_B1)))
+    print("MINMAX = " + str(4 * np.std(I_B1)))
+    print("TASK B1")   
+    print("mean = " + str(np.mean(I_B2)))
+    print("std = " + str(np.std(I_B2)))
+    print("max = " + str(np.max(I_B2)))
+    print("min = " + str(np.min(I_B2)))
+    print("typical = " + str(2 * np.std(I_B2)))
+    print("MINMAX = " + str(4 * np.std(I_B2)))
 
     plt.figure(figsize=(9, 7))
     plt.hist(I_B1, bins=bins, label="I_B1", weights=weights_B1, edgecolor="black", color="teal")
