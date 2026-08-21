@@ -4,9 +4,9 @@ import numpy as np
 IB_TYP = 20
 input_bias_typ = 20
 input_offset_typ = 2
-np.random.default_rng(23)
+np.random.seed(23)
 
-
+# generate the two initial c(I) and d(I) distributions
 def dist_gen():
     std_c_I = input_bias_typ / 2
     c_I = -(np.random.gamma(1.2, std_c_I, 100000))  # one side, negative only
@@ -32,7 +32,7 @@ def dist_gen():
     plt.yticks(range(0, 25, 5))
     plt.xticks(np.arange(-50, 2, 4), rotation = "vertical")
     plt.show()
-
+    #plot d(I)
     weights_d = np.ones_like(d_I) * 100.0 / len(d_I)
     plt.figure(figsize=(9, 7))
     plt.hist(d_I, bins=np.arange(-6, 6.5, 0.5), weights=weights_d, edgecolor="black", color="teal")
@@ -55,8 +55,9 @@ def dist_gen():
 
     return c_I, d_I
 
-
+# calculating and plotting B1 and B2
 def data(c_I, d_I):
+    # calculate B1 and 2
     I_B1 = c_I + (d_I / 2)
     I_B2 = c_I - (d_I / 2)
 
@@ -101,9 +102,8 @@ def data(c_I, d_I):
 
     return I_B1, I_B2
 
-
+# caluclating the inut offset and bias from B1 and 2
 def I_ib_gen(I_B1, I_B2):
-    
     I_io = I_B1 - I_B2
     I_ib = (I_B1 + I_B2) / 2
 
@@ -153,7 +153,7 @@ def I_ib_gen(I_B1, I_B2):
 
     return I_ib, I_io
 
-
+# correlation calc and print
 def corr(I_B1, I_B2):
     print("Correlation coefficient:", np.corrcoef(I_B1, I_B2)[0, 1])
 

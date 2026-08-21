@@ -4,7 +4,7 @@ import numpy as np
 TYP = 1.5
 MINMAX = 5
 STDEV_REQ = 0.5
-np.random.default_rng(23)
+np.random.seed(23)
 
 # PART A
 """
@@ -13,9 +13,9 @@ Get mean, std, max, min
 Create histogram
 """
 
-
+# generate original data
 def data():
-    std = TYP / 2  # because typical more important than minmax imo
+    std = TYP / 2  # because typical more important than minmax 
     # std = (MINMAX/4)
     dataset = np.random.normal(0, std, 100000)
     mask = dataset <= 3.05
@@ -139,6 +139,7 @@ def sort_new(dataset):
     print("typical = " + str(2 * np.std(bad)))
     print("MINMAX = " + str(4 * np.std(bad)))
     print("length = " + str(len(bad)))
+    # frequency in % 
     bad_weights = np.ones_like(bad) * (100.0 / total_original_count)
     plt.figure(figsize=(9, 7))
     plt.hist(bad, bins=np.arange(-3, 3, 0.2), weights=bad_weights, edgecolor="black", color="teal")
@@ -155,6 +156,7 @@ def sort_new(dataset):
 
 
 def main():
+    #get rid of borders
     plt.rc('axes.spines', top=False, right=False, left=True, bottom=True)
     dataset = data()
     sort_new(dataset)

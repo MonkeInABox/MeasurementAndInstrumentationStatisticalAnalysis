@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 TYP = 10
-np.random.default_rng(23)
+np.random.seed(23)
 
 # PART A
 """
@@ -10,7 +10,7 @@ gen original dataset using piecewise and then fit a distribution
 Find max min temp offset dists
 """
 
-
+# unused anymore
 # def data():
 #     std = TYP / 2  # because typical more important than minmax iao
 #     # std = (MINMAX/4)
@@ -54,6 +54,7 @@ def dataPW():
     num_samples = 100000
     bin_indices = np.random.choice(len(func), size=num_samples, p=func)
 
+    # generate random based on pw
     dataset = np.array([np.random.uniform(edges[i], edges[i + 1]) for i in bin_indices])
     weights = np.ones_like(dataset) * (100.0 / len(dataset))
     mean_val = np.mean(dataset)
@@ -75,6 +76,7 @@ def dataPW():
     plt.xticks(range(0, 42, 2))
     plt.yticks(np.arange(0, 27.5, 2.5))
     plt.show()
+    #generate log
     log_samples = np.log(dataset)
     mu = np.mean(log_samples)
     sigma = np.std(log_samples)
@@ -130,6 +132,7 @@ Histograms
 #     plt.show()
 #     return 0
 
+# same as study 1
 def data():
     TYP = 1.5
     std = TYP / 2  # because typical more important than minmax imo
@@ -155,6 +158,7 @@ def data():
     plt.show()
     return dataset
 
+# calculate new temps at max and min
 def offset(vos_25, drift_dataset):
     #sign = np.random.choice([-1, 1], size=100000)
     #signed = sign * drift_dataset 
